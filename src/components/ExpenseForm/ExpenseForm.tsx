@@ -1,12 +1,20 @@
 // src/components/ExpenseForm/ExpenseForm.tsx
 import React, { useState } from 'react';
 import './ExpenseForm.css';
+import type { ExpenseCategory } from '../ExpenseCard/ExpenseCard';
+
+interface FormErrors {
+  description?: string;
+  amount?: string;
+  category?: string;
+  date?: string;
+}
 
 // Form data interface
 interface ExpenseFormData {
   description: string;
   amount: string;
-  category: string;
+  category: ExpenseCategory;
   date: string;
 }
 
@@ -19,7 +27,7 @@ interface ExpenseFormProps {
   onSubmit: (expenseData: {
     description: string;
     amount: number;
-    category: string;
+    category: ExpenseCategory;
     date: string;
   }) => void;
 }
@@ -33,6 +41,49 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit }) => {
     date: new Date().toISOString().split('T')[0] // Today's date as default
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  // This function validates an expense form and returns whether it's valid
+// along with any validation error messages.
+const validateExpenseForm = (
+  data: ExpenseFormData
+): { isValid: boolean; errors: FormErrors } => {
+  
+  // Create an empty object to hold any validation error messages.
+  const validationErrors: FormErrors = {};
+
+  // 1. Check if the description is missing or just whitespace.
+  if (!data.description.trim()) {
+    validationErrors.description = 'Description is required';
+  }
+
+  // 2. Convert the "amount" string into a number.
+  const amount = parseFloat(data.amount);
+
+  // 3. Check if the amount is invalid (NaN) or less than/equal to zero.
+  if (isNaN(amount) || amount <= 0) {
+    validationErrors.amount = 'Amount must be a positive number';
+  }
+
+  // 4. Check if a category was not selected.
+  if (!data.category) {
+    validationErrors.category = 'Category is required';
+  }
+
+  // 5. Check if a date was not provided.
+  if (!data.date) {
+    validationErrors.date = 'Date is required';
+  }
+
+  // 6. Return:
+  //    - isValid: true if no errors were added, false otherwise
+  //    - errors: the object containing any validation messages
+  return {
+    isValid: Object.keys(validationErrors).length === 0,
+    errors: validationErrors
+  };
+};
+
   /**
    * Handles input changes for all form fields using computed property names
    * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement>} e - Change event from form inputs
@@ -45,6 +96,13 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit }) => {
       ...prev,
       [name]: value
     }));
+
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: undefined
+      }))
+    }
   };
 
   /**
@@ -54,6 +112,17 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     
+    const validation = validateExpenseForm(formData);
+
+    if (!validation.isValid) {
+      // ...store the error messages in React state.
+      // Each field can then display its own error message in the UI.
+      // Example: errors.amount = "Amount must be a positive number"
+      setErrors(validation.errors);
+      return; // stop submission
+    }
+    setErrors({});
+
     // Basic validation
     if (!formData.description.trim() || !formData.amount || !formData.date) {
       alert('Please fill in all required fields');
@@ -96,8 +165,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit }) => {
           value={formData.description}
           onChange={handleInputChange}
           placeholder="What did you spend money on?"
+          className={errors.description ? 'error' : ''}
           required
         />
+        {errors.description && <span className="form-error">{errors.description}</span>}
       </div>
 
       <div className="form-row">
@@ -112,8 +183,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit }) => {
             placeholder="0.00"
             step="0.01"
             min="0"
+            className={errors.amount ? 'error' : ''}
             required
           />
+          {errors.amount && <span className="form-error">{errors.amount}</span>}
         </div>
 
         <div className="form-group">
@@ -123,6 +196,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit }) => {
             name="category"
             value={formData.category}
             onChange={handleInputChange}
+            className={errors.category ? 'error' : ''}
           >
             <option value="Food">Food</option>
             <option value="Transportation">Transportation</option>
@@ -130,6 +204,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit }) => {
             <option value="Shopping">Shopping</option>
             <option value="Other">Other</option>
           </select>
+          {errors.category && <span className="form-error">{errors.category}</span>}
         </div>
       </div>
 
@@ -141,8 +216,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit }) => {
           name="date"
           value={formData.date}
           onChange={handleInputChange}
+          className={errors.date ? 'error' : ''}
           required
         />
+        {errors.date && <span className="form-error">{errors.date}</span>}
       </div>
 
       <button type="submit" className="submit-button">
