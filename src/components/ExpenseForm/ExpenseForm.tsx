@@ -153,11 +153,12 @@ const validateExpenseForm = (
   };
 
   return (
-    <form className="expense-form" onSubmit={handleSubmit}>
-      <h3>Add New Expense</h3>
+    <form className="bg-white rounded-lg p-6 mb-8 shadow-sm border border-gray-200" onSubmit={handleSubmit}>
+      <h3 className="text-xl font-bold text-gray-900 mb-5">Add New Expense</h3>
       
-      <div className="form-group">
-        <label htmlFor="description">Description *</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 mb-1.5" 
+        htmlFor="description">Description *</label>
         <input
           type="text"
           id="description"
@@ -165,15 +166,20 @@ const validateExpenseForm = (
           value={formData.description}
           onChange={handleInputChange}
           placeholder="What did you spend money on?"
-          className={errors.description ? 'error' : ''}
+          className={`w-full px-3 py-2.5 border border-gray-300 rounded-md
+            text-sm bg-white text-gray-700 transition-colors duration-200
+            hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500
+            placeholder-gray-400
+
+            ${errors.description ? 'error' : ''}`}
           required
         />
-        {errors.description && <span className="form-error">{errors.description}</span>}
+        {errors.description && <span className="text-red-500 text-xs mt-1">{errors.description}</span>}
       </div>
 
       <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="amount">Amount *</label>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1.5"  htmlFor="amount">Amount *</label>
           <input
             type="number"
             id="amount"
@@ -183,20 +189,28 @@ const validateExpenseForm = (
             placeholder="0.00"
             step="0.01"
             min="0"
-            className={errors.amount ? 'error' : ''}
+            className={`w-full px-3 py-2.5 border border-gray-300 rounded-md
+            text-sm bg-white text-gray-700 transition-colors duration-200
+            hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500
+            placeholder-gray-400 
+            ${errors.amount ? 'error' : ''}`}
             required
           />
-          {errors.amount && <span className="form-error">{errors.amount}</span>}
+          {errors.amount && <span className="text-red-500 text-xs mt-1">{errors.amount}</span>}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1.5"  htmlFor="category">Category</label>
           <select
             id="category"
             name="category"
             value={formData.category}
             onChange={handleInputChange}
-            className={errors.category ? 'error' : ''}
+            className={`w-full px-3 py-2.5 border border-gray-300 rounded-md
+            text-sm bg-white text-gray-700 transition-colors duration-200
+            hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500
+            placeholder-gray-400 cursor-pointer
+            ${errors.category ? 'error' : ''}`}
           >
             <option value="Food">Food</option>
             <option value="Transportation">Transportation</option>
@@ -204,25 +218,33 @@ const validateExpenseForm = (
             <option value="Shopping">Shopping</option>
             <option value="Other">Other</option>
           </select>
-          {errors.category && <span className="form-error">{errors.category}</span>}
+          {errors.category && <span className="text-red-500 text-xs mt-1">{errors.category}</span>}
         </div>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="date">Date</label>
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 mb-1.5"  htmlFor="date">Date</label>
         <input
           type="date"
           id="date"
           name="date"
           value={formData.date}
           onChange={handleInputChange}
-          className={errors.date ? 'error' : ''}
+          className={`w-full px-3 py-2.5 border border-gray-300 rounded-md
+            text-sm bg-white text-gray-700 transition-colors duration-200
+            hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500
+            placeholder-gray-400
+            ${errors.date ? 'error' : ''}`}
           required
         />
-        {errors.date && <span className="form-error">{errors.date}</span>}
+        {errors.date && <span className="text-red-500 text-xs mt-1">{errors.date}</span>}
       </div>
 
-      <button type="submit" className="submit-button">
+      <button type="submit" className="px-4 py-2.5 rounded-md text-sm font-medium cursor-pointer transition-all duration-200 border inline-flex items-center justify-center min-w-20
+      bg-blue-500 text-white border-blye-500
+      hover:bg-blue-600 hover:border-blue-600 hover:-translate-y-0.5
+      disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+      disabled:hover:transform-none">
         Add Expense
       </button>
     </form>
