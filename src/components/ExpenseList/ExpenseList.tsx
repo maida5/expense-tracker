@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import ExpenseCard from '../ExpenseCard/ExpenseCard';
 import type { ExpenseCardProps, ExpenseCategory } from '../ExpenseCard/ExpenseCard';
-import './ExpenseList.css';
 
 // Type for expense data (reusing interface from ExpenseCard)
 type Expense = ExpenseCardProps;
@@ -63,17 +62,24 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDeleteExpense  })
   };
 
   return (
-    <div className="expense-list">
+    <div className="bg-white rounded-lg p-6 mb-8 shadow-sm border border-gray-200">
       <div className="expense-controls">
-        <h2>Your Expenses</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Expenses</h2>
         
         <div className="filter-controls">
-          <label htmlFor="category-filter">Filter by category:</label>
+          <label className="text-xl font-bold text-blue-500 m-0" htmlFor="category-filter">Filter by category:</label>
           <select 
             id="category-filter"
             value={filterCategory}
             onChange={handleCategoryChange}
-            className="category-select"
+            className="
+            px-3 py-2 border border-gray-300 rounded-md
+            text-sm bg-white text-gray-700 cursor-pointer
+            transition-colors duration-200
+            hover:border-blue-500
+            focus:outline-none
+            focus:ring-2 focus:ring-blue-500 focus:border-transparent
+            "
           >
             <option value="All">All Categories</option>
             <option value="Food">Food</option>
@@ -84,15 +90,15 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onDeleteExpense  })
         </div>
       </div>
 
-      <div className="expense-summary">
+      <div className="flex justify-between items-center mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
         <p>
           Total: ${filteredTotal.toFixed(2)} ({filteredExpenses.length} expenses)
         </p>
       </div>
 
-      <div className="expense-items">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         {filteredExpenses.length === 0 ? (
-          <p className="no-expenses">
+          <p className="text-center py-10 px-5 text-gray-500 text-base m-0">
             No expenses found. Add some expenses to get started!
           </p>
         ) : (
