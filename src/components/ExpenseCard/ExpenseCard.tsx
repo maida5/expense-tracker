@@ -1,3 +1,4 @@
+'use client'
 /*
 TYPESCRIPT FEATURE INVENTORY:
 Interfaces Found:
@@ -18,7 +19,6 @@ Error I Fixed:
 
 // src/components/ExpenseCard/ExpenseCard.tsx
 import React from 'react';
-import './ExpenseCard.css';
 
 // TypeScript interface defines the structure of props this component expects
 // This acts like a contract - any parent component must provide these exact properties

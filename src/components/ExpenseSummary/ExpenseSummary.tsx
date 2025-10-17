@@ -1,6 +1,5 @@
 // src/components/ExpenseSummary/ExpenseSummary.tsx
 import React from 'react';
-// import './ExpenseSummary.css';
 
 /**
  * Displays summary statistics for expenses including total amount and count

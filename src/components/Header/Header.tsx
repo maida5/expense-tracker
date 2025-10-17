@@ -1,6 +1,5 @@
 // src/components/Header/Header.tsx
 import React from 'react';
-// import './Header.css';
 
 /**
  * Application header with title and navigation elements
